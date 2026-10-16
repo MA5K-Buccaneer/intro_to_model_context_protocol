@@ -1,11 +1,14 @@
 # MCP Chat
 
+> **About this repository:** This is my completed work for the Anthropic Claude Academy course [**Introduction to Model Context Protocol**](https://academy.claude.com/courses/introduction-to-model-context-protocol). Beyond finishing the course exercises, I modified the project to run on the updated MCP Python SDK (v2) and to work with OpenAI-compatible APIs, so it can use models like Google Gemini as well as Claude. The original starter code is by Anthropic; the changes listed below are mine.
+
 MCP Chat is a command-line chat app that talks to an LLM and gives it access to documents, tools and prompts served over the MCP (Model Context Protocol). It supports document retrieval with `@`, slash commands backed by MCP prompts, and extra MCP servers passed on the command line.
 
-This version is built on **MCP Python SDK v2** and can use either:
+## What I did
 
-- **Claude** through the Anthropic API, or
-- **any OpenAI-compatible API**: Google Gemini, Groq, OpenRouter, Ollama, and others (several have free tiers).
+- **Completed the course exercises:** implemented the MCP server and client TODOs, including the document tools, resources, and the `format` and `summarize` prompts.
+- **Upgraded from MCP Python SDK v1 to v2** (see [Upgrading from MCP SDK v1](#upgrading-from-mcp-sdk-v1)).
+- **Added support for any OpenAI-compatible API**, so the app can run on Google Gemini, Groq, OpenRouter, Ollama and others (several have free tiers) as well as Claude (see [Using an OpenAI-compatible provider](#using-an-openai-compatible-provider)).
 
 ## Prerequisites
 
@@ -143,8 +146,14 @@ Use the @ symbol followed by a document ID to include document content in your q
 Use the / prefix to run a prompt defined in the MCP server:
 
 ```
+> /summarize deposition.md
 > /format deposition.md
 ```
+
+| Command      | What it does                                           |
+| ------------ | ------------------------------------------------------ |
+| `/summarize` | Summarizes the document's main points                  |
+| `/format`    | Rewrites the document in Markdown using `edit_document` |
 
 Commands auto-complete when you press Tab.
 
@@ -175,9 +184,9 @@ The Claude-only `thinking` options are ignored when using an OpenAI-compatible p
 
 Edit the `mcp_server.py` file to add new documents to the `docs` dictionary.
 
-### Implementing MCP Features
+### Adding MCP Tools, Resources and Prompts
 
-Remaining TODO in `mcp_server.py`: add a `summarize` prompt.
+Add them in `mcp_server.py` with the `@mcp.tool`, `@mcp.resource` and `@mcp.prompt` decorators. New prompts show up automatically as `/` commands in the chat. The chat calls each prompt with a single `doc_id` argument, so a new prompt should take `doc_id` as its parameter.
 
 ### Linting and Typing Check
 
